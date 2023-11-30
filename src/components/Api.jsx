@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const KEY = '25e2aa0c0d0f2efeb739a87ae42543b5';
+const apiKey = '25e2aa0c0d0f2efeb739a87ae42543b5';
 
 const baseUrl = 'https://api.themoviedb.org/3/';
 
 export const getTrending = async () => {
-    const response = await axios.get(`${baseUrl}trending/all/week?api_key=${KEY}`);
+    const response = await axios.get(`${baseUrl}trending/all/week?api_key=${apiKey}`);
     return response.data;
 }
 
@@ -15,7 +15,6 @@ export const getKeyword = async (keyword) => {
  const response = axios.get(`${baseUrl}/search/movie?api_key=${apiKey}&query=${keyword}`);
   return response.data.results;
 };
-
 export const getDetails = async (movieId) => {
  const response = await axios.get(`${baseUrl}/movie/${movieId}?api_key=${apiKey}`);
 return response.data.results;
