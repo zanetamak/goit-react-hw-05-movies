@@ -22,17 +22,17 @@ export const App = () => {
       </nav>
       <Suspense fallback={<div>Wystąpił błąd podczas ładowania strony</div>}>
         <Routes>
+        <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/movies" element={<Movies />}>
-            <Route index element={<div>Movies Index</div>} />
-            <Route path=":movieId" element={<MovieDetails />}>
-              <Route path="cast" element={<Cast />} />
-              <Route path="review" element={<Reviews />} />
-            </Route>
+          <Route path="/movies" element={<Movies />} />
+          <Route path="/movies/:movieId" element={<MovieDetails />}>
+            <Route path="cast" element={<Cast />} />
+            <Route path="reviews" element={<Reviews />} />
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Suspense>
+        </Route>
+      </Routes>
+    </Suspense>
     </Router>
   );
 };
