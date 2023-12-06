@@ -1,29 +1,22 @@
 import React, { lazy, Suspense } from 'react';
-import { NavLink, Routes, Route, Navigate, BrowserRouter as Router } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
+const SharedLayout = lazy(() => import('components/SharedLayout/SharedLayout')); // done
 const Home = lazy(() => import('../pages/Home'));
 const Movies = lazy(() => import('../pages/Movies'));
 const MovieDetails = lazy(() => import('../pages/MovieDetails/MovieDetails'));
 const Cast = lazy(() => import('../components/Cast/Cast'));
 const Reviews = lazy(() => import('../components/Reviews/Reviews'));
-import css from './App.module.css'
 
+const Error = () => {
+  return <h3>Wystąpił błąd podczas ładowania komponentu.</h3>;
+};
 
 export const App = () => {
   return (
-      <Router>
-          {/* W powyższym przykładzie <Router> jest bezpośrednio rodzicem nav i Suspense. Jest to dozwolone w JSX, a także może poprawić czytelność kodu, eliminując zbędny kontener (<div>). */}
-      <nav className={css.navigation}>
-        <NavLink className={css.link} to="/">
-          Home
-        </NavLink>
-        <NavLink className={css.link} to="/movies">
-          Movies
-        </NavLink>
-      </nav>
-      <Suspense fallback={<div>Wystąpił błąd podczas ładowania strony</div>}>
-        <Routes>
-        <Route path="/" element={<Layout />}>
+    <Suspense fallback={<Error />}>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<Movies />} />
           <Route path="/movies/:movieId" element={<MovieDetails />}>
@@ -34,9 +27,9 @@ export const App = () => {
         </Route>
       </Routes>
     </Suspense>
-    </Router>
   );
 };
+
 
 
 //  Lazy pozwala na opóźnione ładowanie komponentów. Możesz użyć do dynamicznego importowania 
