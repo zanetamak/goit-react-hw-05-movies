@@ -1,38 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { getTrending } from '../components/Api'; 
+import { getQuery } from '../components/Api'; 
 import { useSearchParams, NavLink, useLocation } from 'react-router-dom';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const { trending } = searchParams;
+  const { query } = searchParams;
   const location = useLocation();
 
- const handleSubmit = (e) => {
+const handleSubmit = (e) => {
   e.preventDefault();
   const { elements } = e.currentTarget;
-  const newTrending = elements.query.value;
   
-  if (newTrending !== '') {
-    setSearchParams({ trading: newTrending });
+  // Sprawdź, czy elements.query istnieje przed próbą odczytania wartości
+  const newQuery = elements.query ? elements.query.value : '';
+
+  if (newQuery !== '') {
+    setSearchParams({ query: newQuery });
   } else {
     setSearchParams({});
   }
-  
+
   e.currentTarget.reset();
 };
-
+  
   useEffect(() => {
-  trending && getTrending(trending).then(setMovies);
-}, [trending]);
+  query && getQuery(query).then(setMovies);
+}, [query]);
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="trending" defaultValue={trending || ''} /> 
+        <input type="text" name="query" defaultValue={query || ''} /> 
         <button type="submit">Search</button>
       </form>
-      {movies.length === 0 && trending ? ( 
+      {movies.length === 0 && query ? ( 
         <div>No results. Please try again.</div>
       ) : (
         <ul>

@@ -7,23 +7,16 @@ const Reviews = () => {
   const { movieId } = useParams();
     
     //  useEffect do pobierania recenzji
-    useEffect(() => {
-        if (movieId) {
-    //   Wywołanie funkcji getReviews 
-    // i ustawienie recenzji filmu za pomocą funkcji setMovieReviews po pobraniu recenzji
-            
-        getReviews(movieId)
-      .then(setMovieReviews);
-        }
-//  określa, które zmienne powinny być śledzone przez useEffect, aby odpowiednio reagować na zmiany w tych zmiennych
-}, [movieId]);
+     useEffect(() => {
+    getReviews(movieId).then(setMovieReviews);
+  }, [movieId]);
 
-if (!movieReviews) {
-  return null;
-}
+  if (!movieReviews) {
+    return;
+  }
 
   return (
-      <div>
+    <div>
       {movieReviews.length > 0 ? (
         <ul>
           {movieReviews.map(review => (
@@ -41,7 +34,6 @@ if (!movieReviews) {
 };
 
 export default Reviews;
-
 /* Warunek sprawdza, czy długość tablicy movieReviews jest większa niż 0.
 Jeśli movieReviews.length jest większe niż 0, renderuje listę nieuporządkowaną ul. */
       /* Jeśli nie ma recenzji movieReviews.length nie jest większe niż 0, renderuje tekst "Brak recenzji tego filmu". */

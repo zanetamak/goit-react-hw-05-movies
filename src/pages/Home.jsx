@@ -1,35 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { getTrending } from 'components/Api';
-import { NavLink, useLocation } from 'react-router-dom';
+import { getTrending } from '../components/Api';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 
 const useTrending = () => {
-    const [trendingMovies, setTrendingMovies] = useState([]);
+  const [trendingMovies, setTrendingMovies] = useState([]);
+  const location = useLocation();
 
-const location = useLocation();
-
-  // Hook do pobierania danych przy zamontowaniu komponentu
   useEffect(() => {
-    // Pobieranie listy popularnych filmów z API
     getTrending().then(setTrendingMovies);
-  }, []);
+  }, []); 
 
-  // Renderowanie poprzez mapowanie komponentu z listą popularnych filmów
   return (
-     <>  skrócona składnia dla komponentu React.Fragment
-      <h1>Trending Today</h1>
+    <>
+      <h1>Trending today</h1>
       <ul>
-        {trendingMovies.map(movie => (
-          <li key={movie.id}>
-            {/* Używanie komponentu NavLink do nawigacji do strony szczegółów filmu */}
-            <NavLink to={`/movies/${movie.id}`} state={{ from: location }}>
-              {movie.title}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+      {trendingMovies.map(movie => (
+        <li key={movie.id}>
+          <Link to={`/movies/${movie.id}`} state={{ from: location }}>
+            {movie.title}
+          </Link>
+        </li>
+      ))}
+    </ul>
     </>
   );
 };
 
-export default useTrending
+export default useTrending;
