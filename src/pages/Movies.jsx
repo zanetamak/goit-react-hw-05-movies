@@ -1,40 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { getQuery } from '../components/Api'; 
+import { getQuery } from '../components/Api';
 import { useSearchParams, NavLink, useLocation } from 'react-router-dom';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const { query } = searchParams;
+  const [query, setQuery] = useState(searchParams.get('query') || ''); // Dodane state dla query
   const location = useLocation();
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  const { elements } = e.currentTarget;
-  
-  // Sprawdź, czy elements.query istnieje przed próbą odczytania wartości
-  const newQuery = elements.query ? elements.query.value : '';
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { elements } = e.currentTarget;
 
-  if (newQuery !== '') {
-    setSearchParams({ query: newQuery });
-  } else {
-    setSearchParams({});
-  }
+    const newQuery = elements.query ? elements.query.value : '';
 
-  e.currentTarget.reset();
-};
-  
+    if (newQuery !== '') {
+      setSearchParams({ query: newQuery });
+      setQuery(newQuery); // Ustawienie lokalnego stanu dla query
+    } else {
+      setSearchParams({});
+      setQuery('');
+    }
+
+    e.currentTarget.reset();
+  };
+
   useEffect(() => {
-  query && getQuery(query).then(setMovies);
-}, [query]);
+    console.log(query);
+    if (query) {
+      getQuery(query).then((data) => {
+        setMovies(data);
+      });
+    }
+  }, [query]);
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="query" defaultValue={query || ''} /> 
+        <input type="text" name="query" defaultValue={query || ''} />
         <button type="submit">Search</button>
       </form>
-      {movies.length === 0 && query ? ( 
+      {movies.length === 0 && query ? (
         <div>No results. Please try again.</div>
       ) : (
         <ul>
